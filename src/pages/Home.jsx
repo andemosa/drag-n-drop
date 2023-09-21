@@ -10,8 +10,8 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [cardsToShow, setCardsToShow] = useState(cards);
 
-  const handleSearch = () => {
-    console.log("here");
+  const handleSearch = (e) => {
+    e.preventDefault()
     if (!searchTerm) return setCardsToShow(cards);
     const searchedCards = cards.filter((item) =>
       item.category.includes(searchTerm.toLowerCase())
@@ -22,10 +22,9 @@ const Home = () => {
   return (
     <div className="w-11/12 xl:w-4/5 max-w-7xl mx-auto">
       <div className="flex gap-2 items-center w-full">
-        <div className="relative flex-1">
-          <div
+        <form className="relative flex-1" onSubmit={handleSearch}>
+          <button
             className="absolute inset-y-0 right-0 flex items-center pr-3 z-10"
-            onClick={handleSearch}
           >
             <svg
               className="w-4 h-4 text-gray-500 dark:text-gray-400"
@@ -43,7 +42,7 @@ const Home = () => {
               />
             </svg>
             <span className="sr-only">Search icon</span>
-          </div>
+          </button>
           <input
             type="text"
             id="search-navbar"
@@ -52,7 +51,7 @@ const Home = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </div>
+        </form>
         <button className="" onClick={() => signOut(auth)}>
           Log out
         </button>

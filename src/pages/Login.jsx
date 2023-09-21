@@ -50,7 +50,7 @@ const Login = () => {
             </div>
             <TextInput
               id="email1"
-              placeholder="name@flowbite.com"
+              placeholder="name@example.com"
               required
               type="email"
               value={email}
