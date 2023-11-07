@@ -1,4 +1,7 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,21 +20,36 @@ const Signup = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        navigate("/login");
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-        setError(errorMessage);
-        // ..
-      });
+
+    try {
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await sendEmailVerification(user.email);
+      navigate("/login");
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage);
+      setError(errorMessage);
+    }
+
+    // .then((userCredential) => {
+    //   // Signed in
+    //   const user = userCredential.user;
+    //   console.log(user);
+    //   navigate("/login");
+    //   // ...
+    // })
+    // .catch((error) => {
+    //   const errorCode = error.code;
+    //   const errorMessage = error.message;
+    //   console.log(errorCode, errorMessage);
+    //   setError(errorMessage);
+    //   // ..
+    // });
 
     setLoading(false);
   };
@@ -73,7 +91,10 @@ const Signup = () => {
             {loading ? <Spinner aria-label="Loading..." /> : "Submit"}
           </Button>
           <p className="font-semibold text-sm text-center">
-            Have an account? <Link to={"/login"} className="text-blue-400">Login</Link>
+            Have an account?{" "}
+            <Link to={"/login"} className="text-blue-400">
+              Login
+            </Link>
           </p>
           {error && (
             <p className="font-semibold text-red-600">
