@@ -29,7 +29,10 @@ const Signup = () => {
         password
       );
       await sendEmailVerification(user);
-      await setDoc(doc(database, "Users", user.uid), user);
+      await setDoc(doc(database, "Users", user.uid), {
+        email: user.email,
+        emailVerified: user.emailVerified,
+      });
       navigate("/login");
     } catch (error) {
       const errorCode = error.code;
