@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import "./App.css";
 import { auth } from "./firebase";
 import Protected from "./components/Protected";
+import VerifyPage from "./pages/Verify";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -36,6 +37,7 @@ function App() {
               </Protected>
             }
           />
+          <Route path="/verify" element={<VerifyPage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
         </Routes>
