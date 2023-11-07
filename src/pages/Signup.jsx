@@ -27,7 +27,7 @@ const Signup = () => {
         email,
         password
       );
-      await sendEmailVerification(user.email);
+      await sendEmailVerification(user);
       navigate("/login");
     } catch (error) {
       const errorCode = error.code;

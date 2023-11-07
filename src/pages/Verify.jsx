@@ -7,8 +7,10 @@ const VerifyPage = () => {
     // Localize the UI to the selected language as determined by the lang
     // parameter.
     // Try to apply the email verification code.
+    console.log(auth.currentUser);
     applyActionCode(auth, actionCode)
       .then((resp) => {
+        console.log(auth.currentUser);
         console.log(resp);
 
         // Email address has been verified.
