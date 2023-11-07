@@ -1,16 +1,25 @@
 import { applyActionCode } from "firebase/auth";
 import { useEffect } from "react";
-import { auth } from "../firebase";
+import { auth, database } from "../firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const VerifyPage = () => {
   const handleVerifyEmail = (auth, actionCode) => {
     // Localize the UI to the selected language as determined by the lang
     // parameter.
     // Try to apply the email verification code.
-    console.log(auth.currentUser);
+    console.log(auth);
     applyActionCode(auth, actionCode)
-      .then((resp) => {
-        console.log(auth.currentUser);
+      .then(async (resp) => {
+        const userRef = doc(database, "Users", auth.currentUser.uid);
+
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          await updateDoc(userRef, {
+            timeLastActive: Date.now(),
+            lastLoginTimeStamp: Date.now(),
+          });
+        }
         console.log(resp);
 
         // Email address has been verified.
